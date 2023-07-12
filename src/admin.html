@@ -1,0 +1,44 @@
+<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="admin-container">
+            <h1>Admin</h1>
+            <h3>채팅방 목록</h3>
+            <ul class="room-list">
+
+            </ul>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const roomList = document.querySelector(".room-list");
+
+        // Socket.IO 서버에 연결
+        const socket = io();
+        // admin.html에서 채팅방 목록을 요청
+        socket.emit("joinAdminRoom");
+
+        // 채팅방 목록을 수신하여 목록을 업데이트
+        socket.on("roomList", (rooms) => {
+            roomList.innerHTML = "";
+            rooms.forEach((room) => {
+                const item = document.createElement("li");
+                item.textContent = room.name;
+                roomList.appendChild(item);
+            });
+        });
+    </script>
+</body>
+
+</html>
