@@ -30,7 +30,9 @@ io.on("connection", (socket) => {
       // 채팅방 정보 저장
       const room = {
           name: roomName,
-          socketIds: [socket.id]
+          socketIds: [socket.id],
+          chatCount: 0, // 채팅 개수 초기값 0으로 설정
+          time: moment(new Date()).format("h:mm A")
       };
       chatRooms.push(room);
 
@@ -48,6 +50,16 @@ io.on("connection", (socket) => {
           msg,
           time: moment(new Date()).format("h:mm A")
       });
+
+      
+        // 해당 채팅방의 채팅 개수 증가 
+        const room = chatRooms.find((room) => room.name === roomName);
+        if (room){
+              room.chatCount++;
+        } 
+
+        // admin.html에 채팅방 목록 전송
+        io.to("admin").emit("roomList", chatRooms);
   });
 
   socket.on("joinAdminRoom", () => {
