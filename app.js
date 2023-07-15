@@ -37,9 +37,15 @@ io.on("connection", (socket) => {
       chatRooms.push(room);
 
       
-      // admin.html에 새로운 채팅방 목록 전송
+      // adminRoomList.html에 새로운 채팅방 목록 전송
       io.to("admin").emit("roomList", chatRooms);
   });
+
+  socket.on("adminjoinRoom", (roomName) => {
+    // 해당 방에 참가
+    socket.join(roomName);
+    console.log(`상담원이 ${roomName} 방에 참가 하셨습니다.`);
+});
 
   socket.on("chatting", (data) => {
       const { name, msg, roomName } = data;
@@ -58,14 +64,14 @@ io.on("connection", (socket) => {
               room.chatCount++;
         } 
 
-        // admin.html에 채팅방 목록 전송
+        // adminRoomList.html에 채팅방 목록 전송
         io.to("admin").emit("roomList", chatRooms);
   });
 
   socket.on("joinAdminRoom", () => {
-      // admin.html로부터의 요청을 처리하여 해당 소켓을 "admin" 방에 추가
+      // adminRoomList.html로부터의 요청을 처리하여 해당 소켓을 "admin" 방에 추가
       socket.join("admin");
-      // admin.html에 채팅방 목록 전송
+      // adminRoomList.html에 채팅방 목록 전송
       socket.emit("roomList", chatRooms);
   });
 });
