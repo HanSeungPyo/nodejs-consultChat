@@ -21,8 +21,8 @@ app.get("/admin", (req, res) => {
 const chatRooms = [];
 
 io.on("connection", (socket) => {
+  //사용자의 방참가
   socket.on("joinRoom", (roomName) => {
-      // 해당 방에 참가
       socket.join(roomName);
      
       console.log(`${roomName} 방에 참가 하셨습니다.`);
@@ -32,7 +32,8 @@ io.on("connection", (socket) => {
           name: roomName,
           socketIds: [socket.id],
           chatCount: 0, // 채팅 개수 초기값 0으로 설정
-          time: moment(new Date()).format("h:mm A")
+          time: moment(new Date()).format("h:mm A"),
+          chatHistory: [], // 빈 채팅 기록 배열을 초기화
       };
       chatRooms.push(room);
 
@@ -45,7 +46,7 @@ io.on("connection", (socket) => {
     // 해당 방에 참가
     socket.join(roomName);
     console.log(`상담원이 ${roomName} 방에 참가 하셨습니다.`);
-});
+  });
 
   socket.on("chatting", (data) => {
       const { name, msg, roomName } = data;
@@ -58,10 +59,17 @@ io.on("connection", (socket) => {
       });
 
       
-        // 해당 채팅방의 채팅 개수 증가 
+        // 해당 채팅방의 채팅 개수 증가 및 채팅기록 저장
         const room = chatRooms.find((room) => room.name === roomName);
         if (room){
               room.chatCount++;
+
+              // 이 채팅방의 채팅 기록에 메시지를 저장
+              room.chatHistory.push({
+                name,
+                msg,
+                time: moment(new Date()).format("h:mm A"),
+              });
         } 
 
         // adminRoomList.html에 채팅방 목록 전송
@@ -74,5 +82,16 @@ io.on("connection", (socket) => {
       // adminRoomList.html에 채팅방 목록 전송
       socket.emit("roomList", chatRooms);
   });
+
+
+  socket.on("getChatHistory", (roomName) => {
+    // 주어진 roomName에 해당하는 채팅방 찾기
+    const room = chatRooms.find((room) => room.name === roomName);
+    if (room) {
+      // 채팅 기록을 클라이언트에게 전송
+      socket.emit("chatHistory", room.chatHistory);
+    }
+  });
+
 });
 

@@ -51,7 +51,7 @@ html, body {
     margin-right: 2rem;
 }
 
-.chat-name {
+.room-name {
     font-weight: 700;
     font-size: 1.5rem;
     flex: 7;

@@ -11,7 +11,10 @@ const urlParams = new URLSearchParams(window.location.search);
 const roomName = urlParams.get("room");
 
 if (roomName) {
+    // 관리자 방 입장
     socket.emit("adminjoinRoom", roomName);
+    // 해당 방의 채팅 기록을 요청
+    socket.emit("getChatHistory", roomName);
 }
 
 const send = () =>{
@@ -42,6 +45,18 @@ socket.on("chatting", (data)=>{
     item.makeLi();
     displayContainer.scrollTo(0,displayContainer.scrollHeight);
 })
+
+// 서버로부터 대화 기록 수신
+socket.on("chatHistory", (chatHistory) => {
+    // 대화 기록을 표시
+    chatHistory.forEach((message) => {
+        const { name, msg, time } = message;
+        const item = new LiModel(name, msg, time);
+        item.makeLi();
+        displayContainer.scrollTo(0,displayContainer.scrollHeight);
+    });
+});
+
 
 function LiModel(name, msg, time){
     this.name = name;
