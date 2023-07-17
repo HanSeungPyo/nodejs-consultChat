@@ -1,10 +1,20 @@
+const fs = require('fs');
 const express = require("express");
-const http = require("http");
+const https = require("https");
 const app = express();
 const path = require("path");
-const server = http.createServer(app);
 const socketIO = require("socket.io");
 const moment = require("moment");
+
+//ssl 인증서 설정
+const options = {
+  key: fs.readFileSync(path.join(__dirname, "ssl/cert.key")),
+  cert: fs.readFileSync(path.join(__dirname, "ssl/cert.crt"))
+};
+
+
+
+const server = https.createServer(options, app);
 
 const io = socketIO(server);
 
@@ -16,6 +26,7 @@ server.listen(PORT, ()=>console.log(`server is running ${PORT}`));
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "src", "admin.html"));
 });
+
 
 // 채팅방 목록을 저장할 배열
 const chatRooms = [];
