@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+  <button onclick="requestNotificationPermission()">알림 허용 요청</button>
+  <button onclick="sendNotification()">알림 보내기</button>
+
+  <script>
+    // 알림 허용 요청
+    function requestNotificationPermission() {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          console.log('알림 허용됨');
+          // 서비스 워커 등록
+          navigator.serviceWorker.register('service-worker.js').then(registration => {
+            console.log('서비스 워커 등록 성공');
+          }).catch(error => {
+            console.error('서비스 워커 등록 실패:', error);
+          });
+        } else {
+          console.log('알림 거부됨');
+        }
+      });
+    }
+
+    // 알림 보내기
+    function sendNotification() {
+      if (Notification.permission === 'granted') {
+        if (navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({
+            title: '알림 제목',
+            body: '알림 테스트 메시지'
+          });
+        } else {
+          console.log('서비스 워커가 아직 준비되지 않았습니다.');
+        }
+      } else {
+        console.log('알림 권한이 허용되지 않았습니다.');
+      }
+    }
+  </script>
+</body>
+</html>
