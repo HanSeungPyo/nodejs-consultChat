@@ -2,6 +2,7 @@
 
 const roomList = document.querySelector(".room-list");
 
+
 // Socket.IO 서버에 연결
 const socket = io();
 // adminRoomList.html에서 채팅방 목록을 요청
@@ -15,8 +16,13 @@ socket.on("roomList", (rooms) => {
         const {name, socketIds, chatCount, time} = room;
         const item = new LiModel(name, socketIds[0], chatCount, time);
         item.makeLi();
+
+        sendNotification(name);
     });
+
+    
 });
+
 
 
 function LiModel(name, socketId, chatCount, time){
@@ -47,3 +53,46 @@ roomList.addEventListener("click", (event) => {
     }
 });
 
+
+// 알림 허용 요청
+function requestNotificationPermission() {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        console.log('알림 허용됨');
+        // 서비스 워커 등록
+        navigator.serviceWorker.register('service-worker.js').then(registration => {
+          console.log('서비스 워커 등록 성공');
+        }).catch(error => {
+          console.error('서비스 워커 등록 실패:', error);
+        });
+      } else {
+        console.log('알림 거부됨');
+      }
+    });
+  }
+
+// 알림 끄기
+function disableNotification() {
+    if (Notification.permission === 'granted') {
+      Notification.permission = 'denied';
+      console.log('알림 허용안됨');
+    }
+  }
+
+  // 알림 보내기
+  function sendNotification(name) {
+    if (Notification.permission === 'granted') {
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          title: name,
+          body: '새로운 상담룸이 개설되었습니다.'
+        });
+      } else {
+        console.log('서비스 워커가 아직 준비되지 않았습니다.');
+      }
+    } else {
+      console.log('알림 권한이 허용되지 않았습니다.');
+    }
+  }
+
+  

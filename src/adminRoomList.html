@@ -8,11 +8,17 @@
     <title>Admin</title>
     <link rel="stylesheet" href="css/adminStyle.css">
 </head>
+<script>
+let pushChk = Notification.permission;
+</script>
 
 <body>
     <div class="wrap">
         <div class="admin-header">
             <h1>상담챗 목록</h1>
+        </div>
+        <div>
+            <input type="checkbox" checked data-toggle="toggle" data-onstyle="primary"> 상담방 생성 알림
         </div>
         <div class="admin-container">
             <ul class="room-list">
