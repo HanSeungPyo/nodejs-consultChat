@@ -1,7 +1,21 @@
 "use strict"
 
 const roomList = document.querySelector(".room-list");
+const alarm = document.querySelector("#alarm");
 
+
+function checkNotificationPermission() {
+  if (Notification.permission === 'granted') {
+    alarm.checked = true;
+    alarm.disabled = true;
+  } else {
+    alarm.checked = false;
+    alarm.disabled = false;
+  }
+}
+
+// 페이지 로딩 시 초기 상태 설정
+checkNotificationPermission();
 
 // Socket.IO 서버에 연결
 const socket = io();
@@ -24,6 +38,9 @@ socket.on("roomList", (rooms) => {
 });
 
 
+alarm.addEventListener("click", ()=>{
+    requestNotificationPermission()
+});
 
 function LiModel(name, socketId, chatCount, time){
     this.name = name;
@@ -59,6 +76,8 @@ function requestNotificationPermission() {
     Notification.requestPermission().then(permission => {
       if (permission === 'granted') {
         console.log('알림 허용됨');
+        alarm.checked = true;
+        alarm.disabled = true;
         // 서비스 워커 등록
         navigator.serviceWorker.register('service-worker.js').then(registration => {
           console.log('서비스 워커 등록 성공');
@@ -69,14 +88,6 @@ function requestNotificationPermission() {
         console.log('알림 거부됨');
       }
     });
-  }
-
-// 알림 끄기
-function disableNotification() {
-    if (Notification.permission === 'granted') {
-      Notification.permission = 'denied';
-      console.log('알림 허용안됨');
-    }
   }
 
   // 알림 보내기
