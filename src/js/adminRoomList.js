@@ -24,17 +24,17 @@ socket.emit("joinAdminRoom");
 
 // 채팅방 목록을 수신하여 목록을 업데이트
 socket.on("roomList", (rooms) => {
-    roomList.innerHTML = "";
+  const existingRooms = document.querySelectorAll(".room-item");
+  existingRooms.forEach((room) => room.remove());
 
-    rooms.forEach((room) => {
-        const {name, socketIds, chatCount, time} = room;
-        const item = new LiModel(name, socketIds[0], chatCount, time);
-        item.makeLi();
+  rooms.forEach((room) => {
+    const { name, socketIds, chatCount, time } = room;
+    const item = new LiModel(name, socketIds[0], chatCount, time);
+    item.makeLi();
 
-        sendNotification(name);
-    });
+    sendNotification(name);
 
-    
+  });
 });
 
 
