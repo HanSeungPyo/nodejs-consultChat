@@ -32,7 +32,7 @@ html, body {
 .user-container input {
     border-radius: 3px;
     border: none;
-    height:70%;
+    height:100%;
 }
 
 .display-container {
@@ -132,4 +132,6 @@ html, body {
 .received .message {
     background: #fff;
 }
+
+
 
