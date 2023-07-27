@@ -75,3 +75,27 @@ body {
 #consultBtn:hover {
     background-color: #45a049; /* 호버 시 배경색 설정 */
 }
+
+/* 닫기 버튼 스타일 */
+#closeChat {
+    background-color: #f44336; /* 배경색 설정 */
+    border: none; /* 테두리 제거 */
+    color: white; /* 아이콘 색상 설정 */
+    font-size: 20px; /* 아이콘 크기 설정 */
+    width: 30px; /* 버튼 너비 설정 */
+    height: 30px; /* 버튼 높이 설정 */
+    line-height: 30px; /* 아이콘 세로 중앙 정렬 */
+    text-align: center; /* 아이콘 가로 중앙 정렬 */
+    border-radius: 50%; /* 모서리를 둥글게 처리하여 원형으로 보이게 함 */
+    cursor: pointer; /* 커서 모양 변경 */
+    position: absolute; /* 상담톡 채팅창 위치 기준으로 위치 설정 */
+    top: 10px; /* 채팅창 상단으로부터 10px 아래로 설정 */
+    right: 10px; /* 채팅창 우측으로부터 10px 왼쪽으로 설정 */
+    transition: background-color 0.3s ease; /* 배경색 변화 애니메이션 추가 */
+    top: 4px; /* 채팅창 상단으로부터 4px 아래로 설정 */
+}
+
+/* 닫기 버튼에 마우스 호버 시 배경색 변경 */
+#closeChat:hover {
+    background-color: #d32f2f; /* 호버 시 배경색 설정 */
+}
