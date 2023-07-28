@@ -51,6 +51,9 @@ io.on("connection", (socket) => {
       
       // adminRoomList.html에 새로운 채팅방 목록 전송
       io.to("admin").emit("roomList", chatRooms);
+
+      //새로운 채팅방 생성 시 알람처리용
+      io.to("admin").emit("newRoom", room);
   });
 
   socket.on("adminjoinRoom", (roomName) => {

@@ -32,15 +32,17 @@ socket.on("roomList", (rooms) => {
     const item = new LiModel(name, socketIds[0], chatCount, time);
     item.makeLi();
 
-    sendNotification(name);
+
 
   });
 });
 
-
-alarm.addEventListener("click", ()=>{
-    requestNotificationPermission()
+//새로운 방 알림
+socket.on("newRoom", (room) => {
+  sendNotification(room.name);
 });
+
+
 
 function LiModel(name, socketId, chatCount, time){
     this.name = name;
