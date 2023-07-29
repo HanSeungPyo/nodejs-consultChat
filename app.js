@@ -45,6 +45,7 @@ io.on("connection", (socket) => {
           chatCount: 0, // 채팅 개수 초기값 0으로 설정
           time: moment(new Date()).format("h:mm A"),
           chatHistory: [], // 빈 채팅 기록 배열을 초기화
+          consultationStatus: '미정' // 상담 상태 초기값 '미정'으로 설정
       };
       chatRooms.push(room);
 

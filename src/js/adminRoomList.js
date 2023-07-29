@@ -28,8 +28,8 @@ socket.on("roomList", (rooms) => {
   existingRooms.forEach((room) => room.remove());
 
   rooms.forEach((room) => {
-    const { name, socketIds, chatCount, time } = room;
-    const item = new LiModel(name, socketIds[0], chatCount, time);
+    const { name, socketIds, chatCount, time, consultationStatus } = room;
+    const item = new LiModel(name, socketIds[0], chatCount, time, consultationStatus);
     item.makeLi();
 
 
@@ -44,11 +44,21 @@ socket.on("newRoom", (room) => {
 
 
 
-function LiModel(name, socketId, chatCount, time){
+function LiModel(name, socketId, chatCount, time, consultationStatus){
     this.name = name;
     this.socketId = socketId;
     this.chatCount = chatCount;
     this.time = time;
+    this.consultationStatus = consultationStatus;
+
+    let badgeClass;
+    if (this.consultationStatus === "미정") {
+        badgeClass = "red";
+    } else if (this.consultationStatus === "배치") {
+        badgeClass = "green";
+    } else if (this.consultationStatus === "상담 종료") {
+        badgeClass = "gray";
+    }
 
     this.makeLi = ()=>{
         const li = document.createElement("li");
@@ -57,7 +67,10 @@ function LiModel(name, socketId, chatCount, time){
         const dom =`
                     <span class="chat-count">${chatCount}</span>
                     <span class="room-name">${name}</span>
-                    <span class="time">${time}</span>
+                    <div class="badge-time-container">
+                      <span class="badge ${badgeClass}">${this.consultationStatus}</span>
+                      <span class="time">${time}</span>
+                    </div>
                     `;
         li.innerHTML = dom;
         roomList.appendChild(li);

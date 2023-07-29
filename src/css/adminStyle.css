@@ -63,3 +63,30 @@ html, body {
     margin: 0 5px; 
     align-items: flex-end;
 }
+
+.badge {
+  padding: 5px 10px;
+  color: white;
+  border-radius: 5px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.badge.red {
+  background-color: red;
+}
+
+.badge.green {
+  background-color: green;
+}
+
+.badge.gray {
+  background-color: gray;
+}
+
+.badge-time-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: auto;
+}
