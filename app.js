@@ -108,5 +108,16 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("roomClicked", ({roomName, roomId}) => {
+    // 찾은 방의 consultationStatus 값을 변경
+    const room = chatRooms.find((room) => room.name === roomName && room.socketId === roomId);
+    if (room) {
+      room.consultationStatus = "배치"; 
+    }
+
+    // adminRoomList.html에 채팅방 목록 전송
+    io.to("admin").emit("roomList", chatRooms); 
+  });
+
 });
 

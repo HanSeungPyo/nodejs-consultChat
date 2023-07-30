@@ -64,6 +64,7 @@ function LiModel(name, socketId, chatCount, time, consultationStatus){
         const li = document.createElement("li");
         li.classList.add("room-item");
         li.dataset.roomName = name; // 방 이름을 데이터 속성으로 추가
+        li.dataset.socketId = socketId; // 소켓 아이디를 데이터 속성으로 추가
         const dom =`
                     <span class="chat-count">${chatCount}</span>
                     <span class="room-name">${name}</span>
@@ -81,6 +82,8 @@ roomList.addEventListener("click", (event) => {
     const roomItem = event.target.closest(".room-item");
     if (roomItem) {
         const roomName = roomItem.dataset.roomName;
+        const socketId = roomItem.dataset.socketId;
+        socket.emit('roomClicked', {roomName, socketId}); //뱃지 상태 변경
         window.location.href = `adminChat.html?room=${roomName}`;
     }
 });
