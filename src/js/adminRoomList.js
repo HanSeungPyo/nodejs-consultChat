@@ -52,9 +52,9 @@ function LiModel(name, socketId, chatCount, time, consultationStatus){
     this.consultationStatus = consultationStatus;
 
     let badgeClass;
-    if (this.consultationStatus === "미정") {
+    if (this.consultationStatus === "상담원 미정") {
         badgeClass = "red";
-    } else if (this.consultationStatus === "배치") {
+    } else if (this.consultationStatus === "상담원 배치") {
         badgeClass = "green";
     } else if (this.consultationStatus === "상담 종료") {
         badgeClass = "gray";

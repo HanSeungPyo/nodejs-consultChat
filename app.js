@@ -45,7 +45,7 @@ io.on("connection", (socket) => {
           chatCount: 0, // 채팅 개수 초기값 0으로 설정
           time: moment(new Date()).format("h:mm A"),
           chatHistory: [], // 빈 채팅 기록 배열을 초기화
-          consultationStatus: '미정' // 상담 상태 초기값 '미정'으로 설정
+          consultationStatus: '상담원 미정' // 상담 상태 초기값 '미정'으로 설정
       };
       chatRooms.push(room);
 
@@ -112,7 +112,7 @@ io.on("connection", (socket) => {
     // 찾은 방의 consultationStatus 값을 변경
     const room = chatRooms.find((room) => room.name === roomName && room.socketId === roomId);
     if (room) {
-      room.consultationStatus = "배치"; 
+      room.consultationStatus = "상담원 배치"; 
     }
 
     // adminRoomList.html에 채팅방 목록 전송
