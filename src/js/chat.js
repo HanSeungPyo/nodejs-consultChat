@@ -10,6 +10,14 @@ const displayContainer = document.querySelector(".display-container");
 
 let roomName; // 방 이름 변수
 
+// 로컬 스토리지에서 대화명 로드
+nickName.value = localStorage.getItem('nickname') || '';
+
+nickName.addEventListener('change', () => {
+    localStorage.setItem('nickname', nickName.value);
+});
+
+
 const send = () =>{
     
     // 방이 생성되어 있는지 확인
@@ -46,6 +54,9 @@ socket.on("chatting", (data)=>{
     const item = new LiModel(name, msg, time);
     item.makeLi();
     displayContainer.scrollTo(0,displayContainer.scrollHeight);
+
+    // 채팅 메시지를 로컬 스토리지에 저장
+    saveChatToLocalStorage(name, msg, time);
 })
 
 function LiModel(name, msg, time){
@@ -69,4 +80,32 @@ function LiModel(name, msg, time){
     }
 }
 
+// 로컬 스토리지에 채팅 메시지 저장
+function saveChatToLocalStorage(name, msg, time) {
+    let chatHistory = localStorage.getItem("chatHistory");
+    if (!chatHistory) {
+        chatHistory = [];
+    } else {
+        chatHistory = JSON.parse(chatHistory);
+    }
+    chatHistory.push({name, msg, time});
+    localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+}
 
+// 로컬 스토리지에서 채팅 메시지 불러오기
+function loadChatFromLocalStorage() {
+    let chatHistory = localStorage.getItem("chatHistory");
+
+    if (chatHistory) {
+        chatHistory = JSON.parse(chatHistory);
+        chatHistory.forEach(data => {
+            const {name, msg, time} = data;
+            const item = new LiModel(name, msg, time);
+            item.makeLi();
+        });
+        displayContainer.scrollTo(0,displayContainer.scrollHeight);
+    }
+}
+
+// 페이지 로드 시 로컬 스토리지에서 채팅 메시지 불러오기
+loadChatFromLocalStorage();
