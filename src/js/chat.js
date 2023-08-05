@@ -90,11 +90,22 @@ function saveChatToLocalStorage(name, msg, time) {
     }
     chatHistory.push({name, msg, time});
     localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+    localStorage.setItem("lastSaved", Date.now()); // 현재 시간 저장
 }
 
-// 로컬 스토리지에서 채팅 메시지 불러오기
 function loadChatFromLocalStorage() {
     let chatHistory = localStorage.getItem("chatHistory");
+
+    // 하루가 지났는지 확인
+    const lastSaved = localStorage.getItem("lastSaved");
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+
+    // 하루가 지났으면 데이터 초기화
+    if (lastSaved && Date.now() - lastSaved > oneDayInMilliseconds) {
+        localStorage.removeItem("chatHistory");
+        localStorage.removeItem("lastSaved");
+        chatHistory = null;
+    }
 
     if (chatHistory) {
         chatHistory = JSON.parse(chatHistory);
