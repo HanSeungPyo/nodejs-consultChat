@@ -162,3 +162,9 @@ html, body {
 .user-container button:hover {
     background-color: #cc0000;
 }
+
+#endChat {
+    margin-left: 5rem;
+    padding: 5px 10px; 
+    font-size: 13px;
+}

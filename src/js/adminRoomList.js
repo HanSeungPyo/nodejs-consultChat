@@ -56,7 +56,9 @@ function LiModel(name, socketId, chatCount, time, consultationStatus){
         badgeClass = "red";
     } else if (this.consultationStatus === "상담원 배치") {
         badgeClass = "green";
-    } else if (this.consultationStatus === "상담 종료") {
+    } else if (this.consultationStatus === "사용자 종료") {
+        badgeClass = "gray";
+      } else if (this.consultationStatus === "상담 종료") {
         badgeClass = "gray";
     }
 

@@ -119,5 +119,37 @@ io.on("connection", (socket) => {
     io.to("admin").emit("roomList", chatRooms); 
   });
 
+  socket.on("leaveRoom", (roomName) => {
+     // 사용자를 방에서 제거
+    socket.leave(roomName);
+
+    // 해당 채팅방을 찾아서
+    const room = chatRooms.find((room) => room.name === roomName);
+
+    // 해당 채팅방의 상태 변경
+     if (room) {
+      room.consultationStatus = "사용자 종료";
+    }
+
+    if (room) {
+      // 사용자가 대화를 종료했다는 시스템 메시지를 채팅 히스토리에 추가
+      room.chatHistory.push({
+        name: "System",
+        msg: "사용자가 대화를 종료했습니다.",
+        time: moment(new Date()).format("h:mm A"),
+      });
+      
+      // 종료 메시지를 해당 방에 전송 (관리자에게만 전달됨)
+      io.to(roomName).emit("chatting", {
+          name: "System",
+          msg: "사용자가 대화를 종료했습니다.",
+          time: moment(new Date()).format("h:mm A")
+      });
+    }
+
+    // adminRoomList.html에 채팅방 목록 전송
+    io.to("admin").emit("roomList", chatRooms); 
+  });
+
 });
 

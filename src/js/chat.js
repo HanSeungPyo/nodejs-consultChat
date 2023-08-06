@@ -7,6 +7,7 @@ const chatList = document.querySelector(".chatting-list");
 const chatInput = document.querySelector(".chatting-input");
 const sendButton = document.querySelector(".send-button");
 const displayContainer = document.querySelector(".display-container");
+const endChat = document.getElementById("endChat");  // 채팅 종료 버튼
 
 let roomName; // 방 이름 변수
 
@@ -120,3 +121,23 @@ function loadChatFromLocalStorage() {
 
 // 페이지 로드 시 로컬 스토리지에서 채팅 메시지 불러오기
 loadChatFromLocalStorage();
+
+
+// 채팅 종료 버튼 클릭 이벤트
+endChat.onclick = function() {
+    // 로컬 스토리지 초기화
+    localStorage.clear();
+    // 서버로 방에서 나가는 이벤트 전송
+    if (roomName) {
+        socket.emit("leaveRoom", roomName);
+    }
+    // 대화명 초기화
+    nickName.value = '';
+    
+    //상담창닫기
+    parent.chatContent.src = "";  // iframe 내용 비우기
+    parent.chatContainer.classList.add("hidden");
+
+    // 페이지 리로드
+    location.reload();
+}
