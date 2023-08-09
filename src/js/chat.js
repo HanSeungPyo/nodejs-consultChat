@@ -125,19 +125,20 @@ loadChatFromLocalStorage();
 
 // 채팅 종료 버튼 클릭 이벤트
 endChat.onclick = function() {
-    // 로컬 스토리지 초기화
-    localStorage.clear();
-    // 서버로 방에서 나가는 이벤트 전송
-    if (roomName) {
-        socket.emit("leaveRoom", roomName);
+    var isConfirmed = confirm("채팅을 종료하시면 상담 내역이 사라집니다. 종료하시겠습니까?");
+    if (isConfirmed) {
+        // 로컬 스토리지 초기화
+        localStorage.clear();
+        // 서버로 방에서 나가는 이벤트 전송
+        if (roomName) {
+            socket.emit("leaveRoom", roomName);
+        }
+        // 대화명 초기화
+        nickName.value = '';
+        // 페이지 리로드
+        location.reload();
+        // 상담창 닫기
+        parent.chatContent.src = "";  // iframe 내용 비우기
+        parent.chatContainer.classList.add("hidden");
     }
-    // 대화명 초기화
-    nickName.value = '';
-    
-    //상담창닫기
-    parent.chatContent.src = "";  // iframe 내용 비우기
-    parent.chatContainer.classList.add("hidden");
-
-    // 페이지 리로드
-    location.reload();
 }
