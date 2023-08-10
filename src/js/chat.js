@@ -53,7 +53,7 @@ sendButton.addEventListener("click", send);
 socket.on("chatting", (data)=>{
     const {name, msg, time} = data;
     const item = new LiModel(name, msg, time);
-    item.makeLi();
+    if(msg) item.makeLi();
     displayContainer.scrollTo(0,displayContainer.scrollHeight);
 
     // 채팅 메시지를 로컬 스토리지에 저장
