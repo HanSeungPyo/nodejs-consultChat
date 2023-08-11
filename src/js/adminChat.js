@@ -42,7 +42,7 @@ sendButton.addEventListener("click", send);
 socket.on("chatting", (data)=>{
     const {name, msg, time} = data;
     const item = new LiModel(name, msg, time);
-    item.makeLi();
+    if(msg) item.makeLi();
     displayContainer.scrollTo(0,displayContainer.scrollHeight);
 })
 
