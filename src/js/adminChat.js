@@ -44,15 +44,32 @@ socket.on("chatting", (data)=>{
     const item = new LiModel(name, msg, time);
     if(msg) item.makeLi();
     displayContainer.scrollTo(0,displayContainer.scrollHeight);
-})
+});
+
+socket.on("systemMessage", (data)=>{
+
+    console.log('시스템메세지 수신')
+    const {msg} = data;
+    const item = new LiSystemModel(msg);
+    if(msg) item.makeLi();
+    displayContainer.scrollTo(0,displayContainer.scrollHeight);
+});
 
 // 서버로부터 대화 기록 수신
 socket.on("chatHistory", (chatHistory) => {
+
+    console.log(chatHistory);
     // 대화 기록을 표시
     chatHistory.forEach((message) => {
         const { name, msg, time } = message;
-        const item = new LiModel(name, msg, time);
-        item.makeLi();
+
+        if(name=="System"){
+            const item = new LiSystemModel(msg);
+            item.makeLi();
+        }else{
+            const item = new LiModel(name, msg, time);
+            item.makeLi();
+        }
         displayContainer.scrollTo(0,displayContainer.scrollHeight);
     });
 });
@@ -79,4 +96,19 @@ function LiModel(name, msg, time){
     }
 }
 
+function LiSystemModel(msg){
+    this.msg = msg;
+    console.log(msg);
+    this.makeLi = ()=>{
+        const li = document.createElement("li");
+        li.classList.add("System");
+        const dom =`
+                    <div class="message system-message">
+                        <div class="content">${msg}</div>
+                    </div>
+                    `;
+        li.innerHTML = dom;
+        chatList.appendChild(li);
+    }
+}
 

@@ -140,10 +140,8 @@ io.on("connection", (socket) => {
       });
       
       // 종료 메시지를 해당 방에 전송 (관리자에게만 전달됨)
-      io.to(roomName).emit("chatting", {
-          name: "System",
+      io.to(roomName).emit("systemMessage", {
           msg: "사용자가 대화를 종료했습니다.",
-          time: moment(new Date()).format("h:mm A")
       });
     }
 
