@@ -99,3 +99,36 @@ body {
 #closeChat:hover {
     background-color: transparent; /* 호버 시 배경색 없애기 */
 }
+
+/* 아이프레임이 열릴 때 채팅창 스타일 */
+.chat-container.open {
+    display: block;
+}
+
+/* 아이프레임 내용 스타일 */
+.chatContentStyle {
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(35, 57, 66, 0.21);
+}
+
+/* 아이프레임 내 닫기 버튼 스타일 */
+.chatContentStyle #closeChat {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.chatContentStyle #closeChat:hover {
+    background-color: transparent;
+}
