@@ -44,11 +44,22 @@ const send = () =>{
 
 chatInput.addEventListener("keypress", (event)=>{
     if(event.keyCode === 13){
-        send();
+        if(nickName.value){
+            send();
+        }else{
+            alert('닉네임을 입력해주세요.');
+        } 
     }
 });
 
-sendButton.addEventListener("click", send);
+sendButton.addEventListener("click", function(){
+    if(nickName.value){
+        send();
+    }else{
+        alert('닉네임을 입력해주세요.');
+    } 
+        
+});
 
 socket.on("chatting", (data)=>{
     const {name, msg, time} = data;
